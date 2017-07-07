@@ -1,2 +1,3 @@
 DataStructure by C++
-stack & queue
+-stack & queue
+-helped by seung-wu park
