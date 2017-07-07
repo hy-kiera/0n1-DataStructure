@@ -1,0 +1,92 @@
+#include <cstdio>
+#include <queue>
+#include <vector>
+#include <algorithm>
+#define INF 300000000
+
+using namespace std;
+
+int N;
+
+vector <vector <pair<int, int> > > mat(20017);
+
+vector<int> dijkstra(int s){
+	priority_queue <pair<int,int>, vector <pair<int,int> >, greater<pair <int,int> > > pq;
+	vector <int> dist(N*N, INF);
+	dist[s]=0;
+	pq.push(make_pair(0,s));
+	while(!pq.empty()){
+		int cost = pq.top().first, here = pq.top().second;
+		pq.pop();
+		if(dist[here]<cost) continue;
+		for(int i=0;i<mat[here].size();i++){
+			int nextcost= cost + mat[here][i].second;
+			int there=mat[here][i].first;
+			if(dist[there]>nextcost){
+				dist[there]=nextcost;
+				pq.push(make_pair(nextcost,there));
+			}
+		}
+	}
+	return dist;
+}
+
+int dir[4][2]={{1,0},{-1,0},{0,1},{0,-1}};  //하 상 우 좌
+int map[150][150];
+int cnt=0;
+
+int main(){
+	while(1){
+		cnt++;
+		scanf("%d",&N);
+
+		if(N<=0){
+			break;
+		}
+
+		for(int i=0;i<N;i++){
+			for(int j=0;j<N;j++){
+				scanf(" %d", &map[i][j]);
+			}
+		}
+
+		int s=0;
+		for(int i=0;i<N;i++){
+			for(int j=0;j<N;j++){
+				for(int a=0;a<4;a++){
+					int y=i+dir[a][0], x=j+dir[a][1];
+					if(y<0 || y>=N || x<0 || x>=N) continue; //mat[s].push_back(make_pair(INF, INF));
+					else if(y-1==i && x==j){ //하
+						mat[s].push_back(make_pair(s+N, map[i+1][j]));
+						// printf("%d to %d rupy=%d\n", s, s+N, map[i+1][j]);
+					}
+					else if(y+1==i && x==j){ //상
+						mat[s].push_back(make_pair(s-N, map[i-1][j]));
+						// printf("%d to %d rupy=%d\n", s, s-N, map[i-1][j]);
+					}
+					else if(y==i && x-1==j){ //우
+						mat[s].push_back(make_pair(s+1, map[i][j+1]));
+						// printf("%d to %d rupy=%d\n", s, s+1, map[i][j+1]);
+					}
+					else if(y==i && x+1==j){ //좌
+						mat[s].push_back(make_pair(s-1, map[i][j-1]));
+						// printf("%d to %d rupy=%d\n", s, s-1, map[i][j-1]);
+					}
+				}
+				s++;
+			}
+		}
+
+		vector <int> res;
+
+		res=dijkstra(0);
+
+		printf("Problem %d: %d\n", cnt, res[N*N-1]+map[0][0]);
+
+		for(int i=0;i<mat.size();i++){
+			mat[i].clear();
+		}
+	}
+
+	return 0;
+}
