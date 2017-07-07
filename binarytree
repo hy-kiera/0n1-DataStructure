@@ -1,0 +1,30 @@
+#include <cstdio>
+
+int num=1;
+int tree[1500];
+
+void inorder(int root){
+	if(root > num) return;
+	inorder(root*2);
+	scanf("%d", &tree[root]);
+	inorder(root*2+1);
+}
+
+int main(){
+	int k;
+	scanf("%d", &k);
+	for(int i=0;i<k;i++){
+		num *=2;
+	}
+	num--;
+	inorder(1);
+	int x=1;
+	for(int i=1;i<=num;i++){
+		printf("%d ",tree[i]);
+		if(i==x){
+			printf("\n");
+			x=(x+1)*2-1;
+		}
+	}
+	return 0;
+}
