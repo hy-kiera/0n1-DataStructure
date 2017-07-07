@@ -1,0 +1,41 @@
+#include <cstdio>
+#include <queue>
+#include <vector>
+
+using namespace std;
+
+int n, m;
+bool chk[101];
+vector <vector<int> > mat(101);
+
+int bfs(int s){
+	int ret=0;
+	queue <int> q;
+	q.push(s);
+	chk[s]=true;
+	while(!q.empty()){
+		int x=q.front();
+		q.pop();
+		for(int i=0;i<mat[x].size();i++){
+			if(chk[mat[x][i]]==false){
+				chk[mat[x][i]]=true;
+				ret++;
+				q.push(mat[x][i]);
+			}
+		}
+	}
+	return ret;
+}
+
+int main(){
+	scanf("%d %d", &n,&m);
+	for(int i=0;i<m;i++){
+		int s, e;
+		scanf("%d %d", &s, &e);
+		mat[s].push_back(e);
+		mat[e].push_back(s);
+	}
+	printf("%d\n", bfs(1));
+
+	return 0;
+}
