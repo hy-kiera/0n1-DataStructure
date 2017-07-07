@@ -1,0 +1,67 @@
+#include <cstdio>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+vector <pair<int, int> > tree(20017);
+vector <pair<int, int> > lr(20017);
+vector <vector<int> > name(20017);
+
+vector <int> q(20017);
+
+int w=0, h=0;
+
+void inorder(int root){
+	if(root<0){
+		return;
+	}
+	h++;
+	inorder(lr[root].first);
+	w++;
+	tree[root].first=h;
+	tree[root].second=w;
+	inorder(lr[root].second);
+	h--;
+}
+
+int main(){
+	int n, max=-1, maxj, rtnum;
+	scanf("%d", &n);
+
+	for(int i=0;i<n;i++){
+		int a,b,c;
+		scanf(" %d %d %d", &a, &b, &c);
+		lr[a].first = b;
+		lr[a].second = c;
+		if(i==0){
+			rtnum=a;
+		}
+	}
+
+	inorder(rtnum);
+
+	sort(tree.begin(), tree.begin()+n);
+
+	for(int i=1;i<=n;i++){
+		name[tree[i].first].push_back(tree[i].second);
+	}
+
+	int height=tree[n].first;
+
+	for(int j=1;j<=height;j++){
+		int index=name[j].size();
+		int begin=name[j][0];
+		int end=name[j][index-1];
+
+		int dis=end-begin+1;
+		if(dis>max){
+			max=dis;
+			maxj=j;
+		}
+	}
+
+	printf("%d %d", maxj, max);
+
+	return 0;
+}
