@@ -1,0 +1,56 @@
+#include <cstdio>
+#include <queue>
+
+using namespace std;
+
+int mat[1001][1001];  //입력 배열 저장고	
+
+int n, m, v;
+bool chk[1001];
+bool chk2[1001];
+
+void dfs(int s){
+	chk[s]=true;
+	printf("%d ",s);
+	for(int i=1;i<=n;i++){
+		if(mat[s][i]==1 && chk[i]==false){
+			dfs(i);
+		}
+	}
+}
+
+void bfs(int s){
+	queue <int> q;
+	q.push(s);
+	chk2[s]=true;
+	while(!q.empty()){
+		int x=q.front();
+		printf("%d ",x);
+		q.pop();
+		for(int i=1;i<=n;i++){
+			if(mat[x][i]==1 && chk2[i]==false){
+				q.push(i);
+				chk2[i]=true;
+			}
+		}
+	}
+}
+
+
+int main(){
+	scanf("%d %d %d", &n, &m, &v);
+
+	for(int i=0;i<m;i++){
+		int s, e;
+		scanf("%d %d", &s, &e);
+		mat[s][e]=1;
+		mat[e][s]=1;
+	}
+
+	dfs(v);
+	printf("\n");
+	bfs(v);
+	printf("\n");
+
+	return 0;
+}
