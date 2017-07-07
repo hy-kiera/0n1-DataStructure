@@ -1,3 +1,4 @@
-DataStructure by C++ \n
--stack & queue \n
--helped by seung-wu park \n
+# DataStructure by C++
+print(\n)
+# -stack & queue
+# -helped by seung-wu park
